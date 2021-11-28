@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block nav_btn %}
+    
+{%  endblock nav_btn %}
+
+{% block body %}
+<div class="container my-4">
+    <h3>Create An Account...</h3>
+    <form method="post" action="/signup">
+        {% csrf_token %}
+        
+        <div class="form-group my-4">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Your username here...">
+        </div>
+        <div class="form-group my-4">
+            <label for="fname">First Name</label>
+            <input type="text" class="form-control" id="fname" name="fname" placeholder="Your Name here...">
+        </div>
+        <div class="form-group my-4">
+            <label for="lname">Last Name</label>
+            <input type="text" class="form-control" id="lname" name="lname" placeholder="Your Name here...">
+        </div>
+        <div class="form-group my-4">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+        </div>
+        <div class="form-group my-4">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Name!@#123">
+        </div>
+        <div class="form-group my-4">
+            <label for="confpass">Confirm Password</label>
+            <input type="password" class="form-control" id="confpass" name="confpass" placeholder="Name!@#123">
+        </div>
+
+        <button type="submit" class="btn btn-success">Signup</button>
+
+
+        
+    </form>
+</div>
+{% endblock body %}
+
+

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+<div class="container col-lg-5">
+    <div class="card">
+        {% if data %}
+        <div class="card-header"><h4>Notifications</h4></div>
+        <br>
+        <div>
+            {% for d in data %}
+                {% if d.type_of_notification == 1 %}
+                    <div class="card-media"><a href="{% url 'comment_on_post' d.post_id %}">
+                        <img  style="width: 30px; height:30px;" class="ml-2 mr-2" src="{{d.done_by.user_profile.profile_picture.url}}" alt="">
+                        {{ d.done_by.first_name }} {{ d.done_by.last_name }} loved your post.       <small class="col-2">{{d.date.date}}</small></a>
+                    </div>
+                    
+                {% elif d.type_of_notification == 2 %}
+                    <div class="card-media"><a href="{% url 'comment_on_post' d.post_id %}">
+                        <img  style="width: 30px; height:30px;" class="ml-2 mr-2" src="{{d.done_by.user_profile.profile_picture.url}}" alt="">
+                        {{ d.done_by.first_name }} {{ d.done_by.last_name }} cooled your post.       <small class="col-2">{{d.date.date}}</small></a>
+                    </div>
+                {% elif d.type_of_notification == 3 %}
+                    <div class="card-media"><a href="{% url 'comment_on_post' d.post_id %}#{{d.comment_id}}">
+                        <img  style="width: 30px; height:30px;" class="ml-2 mr-2" src="{{d.done_by.user_profile.profile_picture.url}}" alt="">
+                        {{ d.done_by.first_name }} {{ d.done_by.last_name }} commented on your post.       <small class="col-2">{{d.date.date}}</small></a>
+                    </div>
+                {% elif d.type_of_notification == 4 %}
+                <div class="card-media"><a href="{% url 'comment_on_post' d.post_id %}#{{d.comment_id}}">
+                    <img  style="width: 30px; height:30px;" class="ml-2 mr-2" src="{{d.done_by.user_profile.profile_picture.url}}" alt="">
+                    {{ d.done_by.first_name }} {{ d.done_by.last_name }} loved your comment.       <small class="col-2">{{d.date.date}}</small></a>
+                </div>
+                {% elif d.type_of_notification == 5 %}
+                <div class="card-media"><a href="{% url 'comment_on_post' d.post_id %}#{{d.comment_id}}">
+                    <img  style="width: 30px; height:30px;" class="ml-2 mr-2" src="{{d.done_by.user_profile.profile_picture.url}}" alt="">
+                    {{ d.done_by.first_name }} {{ d.done_by.last_name }} cooled on your comment.       <small class="col-2">{{d.date.date}}</small></a>
+                </div>
+                {% endif %}
+                <hr>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No notification</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock body %}

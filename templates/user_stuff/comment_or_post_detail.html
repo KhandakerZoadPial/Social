@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+<div class="container col-lg-5">
+    <div class="card">
+        <div class="card-body">
+            <div class="card" id="{{ post.id }}">
+                <h6 class="card-header">
+                    <div class="float-left">
+                        <div><a style="color:black;"
+                                href="{% url 'user_profile' post.user.username %}">{{post.user.first_name}}
+                                {{post.user.last_name}}</a>
+                                {% if post.user.user_profile.is_verified %}
+                    <img src="https://img.icons8.com/material-rounded/18/000000/verified-account.png"/>
+                    {% endif %}
+                        </div>
+                        <small class="mt-0">{{post.get_date }} ago</small>
+                    </div>
+                    {% if post.user.user_profile.profile_picture %}
+                    <img class="float-right" style="height: 2.5rem; width: 2.5rem; border-radius: 50%;"
+                        src="{{ post.user.user_profile.profile_picture.url }}" alt="">
+                    {% endif %}
+
+                </h6>
+                <div class="card-body">
+
+                    {% if post.captions %}
+                    <p class="card-text" style="white-space: pre-wrap;">{{post.captions}}</p>
+                    {% endif %}
+
+                    {% if post.image %}
+                    <img class="img rounded" src="{{post.image.url}}" style="width:100%;">
+                    {% endif %}
+                    <hr>
+                    <small> <a href="{% url 'show_for_post' post.id %}"> {{post.number_of_love}} </a>
+                        {% if post.number_of_love == 0 or post.number_of_love == 1 %}
+                        Reaction
+
+                        {% else %}
+                        Reactions
+                        {% endif %}
+                        | {{post.number_of_comment}} Comments
+                        {% if request.user == post.user %}
+                        <a class="float-right delete" href="{% url 'delete_post' post.id %}"
+                            id="{{ post.id }}">Delete</a>
+                        {% endif %}
+                    </small>
+
+                    <hr size="30px">
+
+                    <div>
+                        <div class="float-left">
+                            <button class="btn btn-outline-info mr-1"> <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
+                                    <path
+                                        d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
+                                </svg> Share</button>
+                            <a class="btn btn-outline-warning mr-1" href="{% url 'comment_on_post' post.id %}"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-chat-square-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                                </svg></a>
+
+                            {% if post.is_cooled %}
+                            <a class="btn btn-info " href="{% url 'love_post2' post.id %}"> <img
+                                    src="/media/cool_re.ico" style="width: 23px;height: 23px;" alt="cool"> </a>
+                            {% else %}
+                            <a class="btn btn-outline-info " href="{% url 'love_post2' post.id %}"> <img
+                                    src="/media/cool_re.ico" style="width: 23px;height: 23px;" alt="cool"> </a>
+                            {% endif %}
+
+                            {% if post.is_loved %}
+
+                            <a class="btn btn-danger" href="{% url 'love_post' post.id %}"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-heart" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+
+                                </svg></a>
+                            {% else %}
+                            <a class="btn btn-outline-danger" href="{% url 'love_post' post.id   %}"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-heart" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+
+                                </svg></a>
+                            {% endif %}
+
+                        </div>
+                        <div class="float-right">
+                            <button class="btn btn-outline-secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-info" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <br><br>
+                    <hr>
+
+                    <b>Comment on this post-</b>
+
+                    <form action="{% url 'comment_on_post' post.id %}" method="post">
+                        {% csrf_token %}
+                        <textarea class="form-control mt-1" style="width: 80%; height: 60px;" name="comment_text"
+                            cols="25" rows="3" placeholder="Write your comment here..."></textarea>
+
+                        <div class="form-group">
+                            <button class="btn btn-sm mt-2" style="background-color: #0099FF;color:white;"
+                                type="submit">Comment</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        {% if comments %}
+        <div class="card-body">
+            <h5>Recent Comments</h5>
+            {% for c in comments %}
+            <hr>
+            <div class="card-body" id="{{c.id}}">
+                <div class="row">
+                    <div class="col-2">
+                        <img class="rounded-circle" style="width: 40px; height: 40px;"
+                            src="{{c.user.user_profile.profile_picture.url}}" alt="">
+
+
+                    </div>
+                    <div class="col-8">
+                        <h6 class="header ml-0" style="background-color: #fff; border-bottom: none;">
+                            <a style="color:black;"
+                                href="{% url 'user_profile' c.user.username %}">{{c.user.first_name}}
+                                {{c.user.last_name}}</a>
+                            <small class="float-right">{{c.date.date}}</small>
+                        </h6>
+                        <p>{{c.comment_text}}</p>
+                        <hr>
+                        <div>
+                            <small>
+                                {% if c.is_loved %}
+                                <a class="btn btn-danger btn-sm" href="{% url 'love_comment' c.id %}"><svg
+                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-heart" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+
+                                    </svg>
+                                </a>
+
+                                {% else %}
+                                <a class="btn btn-outline-danger btn-sm" href="{% url 'love_comment' c.id %}"><svg
+                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-heart" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+
+                                    </svg>
+                                </a>
+
+                                {% endif %}
+                                {% if c.is_cooled %}
+                                <a class="btn btn-info btn-sm mr-2" href="{% url 'love_comment2' c.id %}"> <img
+                                        src="/media/cool_re.ico" style="width: 20px;height:20px;" alt="cool"> </a>
+                                {% else %}
+                                <a class="btn btn-outline-info btn-sm mr-2" href="{% url 'love_comment2' c.id %}"> <img
+                                        src="/media/cool_re.ico" style="width:20px;height:20px;" alt="cool"> </a>
+
+                                {% endif %}
+                                <a href="{% url 'show_for_comment' c.id %}">{{c.number_of_love}}</a>
+
+
+                                {% if request.user == c.user %}
+                                <a class="float-right" href="{% url 'delete_comment' c.id %}">Delete</a>
+                                {% endif %}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <hr>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+
+
+{% endblock body %}
+

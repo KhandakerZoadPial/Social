@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+
+<div class="container my-4 col-md-8">
+    <div class="card">
+        <div class="container">
+            <br>
+            <form action="{% url 'edit_user_profile_data' type usr.username %}" method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <label for="validationServer01"><b>Edit {{type}}</b></label>
+                        <input type="text" class="form-control is-valid" id="validationServer01"
+                            placeholder="Enter your data" name="data" value="{{data}}" required>
+                        <div class="valid-feedback">
+                            Ready to Go!
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-sm" type="submit">Submit form</button>
+                <br>
+                <br>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
